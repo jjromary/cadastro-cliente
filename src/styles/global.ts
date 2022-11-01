@@ -10,6 +10,7 @@ export const GlobalStyle = createGlobalStyle`
     body {
         background: ${props => props.theme.DefaultBackgroundColor};
         color: ${props => props.theme.DefaultTextColor};
+        -webkit-font-smoothing: antialiased;
     }
 
     :focus {
@@ -22,6 +23,8 @@ export const GlobalStyle = createGlobalStyle`
         font-family: 'Poppins', sans-serif;
         font-weight: 400;
         font-size: 1rem;
+        border: none;
+        border-radius: 8px;
     }
 
     button {

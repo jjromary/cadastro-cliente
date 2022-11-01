@@ -1,3 +1,11 @@
+import { FormsClient } from "../../../components/Forms";
+import { HomeContainer } from "./styles";
+
 export function Home() {
-  return <h1>Você está na Home</h1>;
+  return (
+    <HomeContainer>
+      <FormsClient />
+    </HomeContainer>
+  );
 }
+
