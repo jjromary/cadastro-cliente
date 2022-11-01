@@ -9,10 +9,15 @@ export function FormsClient() {
           <input type="text" id="name" />
 
           <label htmlFor="dataNascimento">Data de nascimento</label>
-          <input type="string" id="dataNasciomento" placeholder="DD/MM/AAAA" />
+          <input type="date" id="dataNasciomento" placeholder="DD/MM/AAAA" />
 
           <label htmlFor="genero">Gênero</label>
-          <input type="text" id="genero" />
+          <select name="genero" id="genero">
+            <option value="Default"></option>
+            <option value="Feminino">Feminino</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Outros">Outros</option>
+          </select>
 
           <label htmlFor="cpf">CPF</label>
           <input type="string" id="cpf" />

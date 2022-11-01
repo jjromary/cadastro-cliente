@@ -12,14 +12,22 @@ export const FormContent = styled.div`
     display: flex;
     flex-direction: column;
     font-size: 1.125rem;
-    gap: 0.8rem;
     margin-right: 1rem;
 
     input {
         width: 100%;
         height: 2.5rem;
         padding: 0 0.5rem;
-        flex: 1;
+        margin-bottom: 1rem;
+    }
+
+    select {
+        height: 2.5rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.125rem;
+        padding: 0 0.5rem;
+        background: #FFFFFF;        
     }
 `;
 
@@ -28,7 +36,6 @@ export const RegisterButton = styled.button`
     border: none;
     padding: 1rem;
     border-radius: 8px;
-    margin-top: 4rem;
 
     display: flex;
     align-items: center;
