@@ -1,6 +1,6 @@
 import { ThemeProvider } from "styled-components";
 import { FormsClient } from "./components/Forms";
-import { GlobalStyle } from "./styles/styles";
+import { GlobalStyle } from "./styles/global";
 import { defaultTheme } from "./styles/themes/default";
 
 export function App() {
