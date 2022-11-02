@@ -1,7 +1,7 @@
 import { FormContainer, FormContent, RegisterButton } from "./styles";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as zod from "zod";
+import { registerClientFormValidationSchema } from "./validationFormField";
 
 interface IFormInputs {
   name: string;
@@ -11,44 +11,40 @@ interface IFormInputs {
   email: string;
   telefone: string;
   cep: string;
-  endereço: string;
+  endereco: string;
   senha: string;
   repeatPassword: string;
 }
 
+const validationFormClient = registerClientFormValidationSchema;
+
 export function FormsClient() {
-  const { register, handleSubmit } = useForm<IFormInputs>({});
+  const { register, handleSubmit, formState } = useForm<IFormInputs>({
+    resolver: zodResolver(validationFormClient),
+  });
 
   function handleRegisterClient(data: IFormInputs) {
     console.log(data);
   }
+
+  console.log(formState.errors);
 
   return (
     <FormContainer>
       <form onSubmit={handleSubmit(handleRegisterClient)} action="">
         <FormContent>
           <label htmlFor="name">Nome completo *</label>
-          <input
-            type="text"
-            id="name"
-            {...(register("name"),
-            {
-              required: true,
-              minLength: 3,
-            })}
-          />
+          <input type="text" id="name" {...register("name")} />
+          <p>{formState.errors?.name?.message}</p>
 
           <label htmlFor="dataNascimento">Data de nascimento *</label>
           <input
-            type="date"
+            type="text"
             id="dataNasciomento"
-            {...(register("dataNascimento"),
-            {
-              required: true,
-              valueAsDate: true,
-            })}
+            {...register("dataNascimento")}
             placeholder="DD/MM/AAAA"
           />
+          <p>{formState.errors?.dataNascimento?.message}</p>
 
           <label htmlFor="genero">Gênero</label>
           <select id="genero" {...register("genero")}>
@@ -59,50 +55,41 @@ export function FormsClient() {
           </select>
 
           <label htmlFor="cpf">CPF *</label>
-          <input
-            type="string"
-            id="cpf"
-            {...(register("cpf"),
-            {
-              required: true,
-            })}
-          />
+          <input type="string" id="cpf" {...register("cpf")} />
+          <p>{formState.errors?.cpf?.message}</p>
 
           <label htmlFor="email">Email *</label>
-          <input
-            type="email"
-            id="email"
-            {...(register("email"),
-            {
-              required: true,
-            })}
-          />
+          <input type="email" id="email" {...register("email")} />
+          <p>{formState.errors?.email?.message}</p>
 
           <label htmlFor="telefone">Telefone</label>
-          <input type="string" id="telefone" {...register("telefone")} />
-
-          <label htmlFor="cep">CEP *</label>
           <input
             type="string"
-            id="number"
-            {...(register("cep"),
-            {
-              required: true,
-            })}
+            id="telefone"
+            placeholder="(DDD)+99999-9999"
+            {...register("telefone")}
           />
+          <p>{formState.errors?.telefone?.message}</p>
+
+          <label htmlFor="cep">CEP *</label>
+          <input type="string" id="number" {...register("cep")} />
+          <p>{formState.errors?.cep?.message}</p>
 
           <label htmlFor="endereço">Endereço *</label>
-          <input type="string" id="endereço" {...register("endereço")} />
+          <input type="string" id="endereço" {...register("endereco")} />
+          <p>{formState.errors?.endereco?.message}</p>
 
-          <label htmlFor="senha">Senha *</label>
-          <input
-            type="password"
-            id="senha"
-            {...(register("senha"),
-            {
-              required: true,
-            })}
-          />
+          <label htmlFor="senha">
+            Senha *{" "}
+            <i>
+              Senha deverá conter no mínimo uma letra minúscula, uma maiúscula,
+              um número, um caractere especial e com o comprimento mínimo de
+              oito caracteres.
+            </i>
+            .
+          </label>
+          <input type="password" id="senha" {...register("senha")} />
+          <p>{formState.errors?.senha?.message}</p>
 
           <label htmlFor="repeatPassword">Repetir a senha *</label>
           <input
@@ -110,6 +97,7 @@ export function FormsClient() {
             id="repeatPassword"
             {...register("repeatPassword")}
           />
+          <p>{formState.errors?.repeatPassword?.message}</p>
 
           <RegisterButton type="submit">Cadastrar</RegisterButton>
         </FormContent>
