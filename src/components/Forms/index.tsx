@@ -2,6 +2,7 @@ import { FormContainer, FormContent, RegisterButton } from "./styles";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerClientFormValidationSchema } from "./validationFormField";
+import { useAPI } from "../../services/Hooks/useAPI";
 
 interface FormDataClient {
   name: string;
@@ -15,6 +16,19 @@ interface FormDataClient {
   senha: string;
   repeatPassword: string;
 }
+
+type AddressViaCep = {
+  cep: string;
+  logradouro: string;
+  complemento: string;
+  bairro: string;
+  localidade: string;
+  uf: string;
+  ibge: string;
+  gia: string;
+  ddd: string;
+  siafi: string;
+};
 
 const validationFormClient = registerClientFormValidationSchema;
 
@@ -40,7 +54,9 @@ export function FormsClient() {
     reset();
   }
 
-  console.log(formState.errors);
+  const { values: address, isFetching } = useAPI("40421520/json");
+
+  console.log(address);
 
   return (
     <FormContainer>
@@ -85,7 +101,9 @@ export function FormsClient() {
           <p>{formState.errors?.telefone?.message}</p>
 
           <label htmlFor="cep">CEP *</label>
+
           <input type="string" id="number" {...register("cep")} />
+          {isFetching && <p>Carregando...</p>}
           <p>{formState.errors?.cep?.message}</p>
 
           <label htmlFor="endereço">Endereço *</label>
