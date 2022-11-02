@@ -9,16 +9,16 @@ export const FormContainer = styled.main`
 
 export const FormContent = styled.div`
     width: 100%;
+    height: auto;
     display: flex;
     flex-direction: column;
     font-size: 1.125rem;
-    margin-right: 1rem;
+    gap: 0.25rem;
 
     input {
         width: 100%;
         height: 2.5rem;
         padding: 0 0.5rem;
-        margin-bottom: 1rem;
     }
 
     select {
@@ -29,6 +29,10 @@ export const FormContent = styled.div`
         padding: 0 0.5rem;
         background: #FFFFFF;        
     }
+
+    i {
+        font-size: 0.75rem;
+    }
 `;
 
 export const RegisterButton = styled.button`
@@ -36,6 +40,7 @@ export const RegisterButton = styled.button`
     border: none;
     padding: 1rem;
     border-radius: 8px;
+    margin-top: 1rem;
 
     display: flex;
     align-items: center;
