@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerClientFormValidationSchema } from "./validationFormField";
 
-interface IFormInputs {
+interface FormDataClient {
   name: string;
   dataNascimento: string;
   genero: string;
@@ -19,12 +19,25 @@ interface IFormInputs {
 const validationFormClient = registerClientFormValidationSchema;
 
 export function FormsClient() {
-  const { register, handleSubmit, formState } = useForm<IFormInputs>({
+  const { register, handleSubmit, formState, reset } = useForm<FormDataClient>({
     resolver: zodResolver(validationFormClient),
+    defaultValues: {
+      name: " ",
+      dataNascimento: " ",
+      genero: " ",
+      cpf: " ",
+      email: " ",
+      telefone: " ",
+      cep: " ",
+      endereco: " ",
+      senha: " ",
+      repeatPassword: " ",
+    },
   });
 
-  function handleRegisterClient(data: IFormInputs) {
+  function handleRegisterClient(data: FormDataClient) {
     console.log(data);
+    reset();
   }
 
   console.log(formState.errors);
