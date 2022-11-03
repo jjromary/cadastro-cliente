@@ -22,11 +22,11 @@ export const registerClientFormValidationSchema = zod.object({
     .string()
     .regex(
       /^\([0-9]{2}\) [0-9]?[0-9]{4}-[0-9]{4}$/,
-      "Telefone inválido. Utilize o formato (DDD) + 99999-9999"
+      "Telefone inválido. Utilize o formato DDD + 999999999"
     ),
-  cep: zod.string().regex(/^[0-9]{5}-[0-9]{3}$/, "Cep inválido"),
+  cep: zod.string().min(8).regex(/^([\d]{2})\.?([\d]{3})\-?([\d]{3})/, "Cep inválido"),
   endereco: zod.string(),
-  senha: zod
+  password: zod
     .string()
     .regex(
       /(?=^.{8,}$)((?=.*\d)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
@@ -38,5 +38,9 @@ export const registerClientFormValidationSchema = zod.object({
       /(?=^.{8,}$)((?=.*\d)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
       "Formato Inválido."
     ),
+}).refine((data) => data.password === data.repeatPassword, {
+  message: "As senhas precisam ser idênticas",
+  path: ['repeatPassword']
 });
+
 

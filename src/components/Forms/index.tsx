@@ -2,8 +2,8 @@ import { FormContainer, FormContent, RegisterButton } from "./styles";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerClientFormValidationSchema } from "./validationFormField";
-import { useAPI } from "../../services/Hooks/useAPI";
-
+import { useState } from "react";
+import { api } from "../../services/api";
 interface FormDataClient {
   name: string;
   dataNascimento: string;
@@ -12,51 +12,76 @@ interface FormDataClient {
   email: string;
   telefone: string;
   cep: string;
+  bairro: string | null;
+  localidade: string | null;
+  logradouro: string | null;
+  uf: string | null;
   endereco: string;
-  senha: string;
+  password: string;
   repeatPassword: string;
 }
-
-type AddressViaCep = {
-  cep: string;
-  logradouro: string;
-  complemento: string;
-  bairro: string;
-  localidade: string;
-  uf: string;
-  ibge: string;
-  gia: string;
-  ddd: string;
-  siafi: string;
-};
 
 const validationFormClient = registerClientFormValidationSchema;
 
 export function FormsClient() {
-  const { register, handleSubmit, formState, reset } = useForm<FormDataClient>({
-    resolver: zodResolver(validationFormClient),
-    defaultValues: {
-      name: " ",
-      dataNascimento: " ",
-      genero: " ",
-      cpf: " ",
-      email: " ",
-      telefone: " ",
-      cep: " ",
-      endereco: " ",
-      senha: " ",
-      repeatPassword: " ",
-    },
+  const [values, setValues] = useState<{
+    localidade: string | null;
+    uf: string | null;
+    bairro: string | null;
+    logradouro: string | null;
+  }>({
+    bairro: " ",
+    localidade: " ",
+    logradouro: " ",
+    uf: " ",
   });
+
+  const [isFetching, setIsFetching] = useState<boolean>();
+  const { register, handleSubmit, formState, reset, setValue } =
+    useForm<FormDataClient>({
+      resolver: zodResolver(validationFormClient),
+      defaultValues: {
+        name: " ",
+        dataNascimento: " ",
+        genero: " ",
+        cpf: " ",
+        email: " ",
+        telefone: " ",
+        cep: " ",
+        endereco: " ",
+        password: " ",
+        repeatPassword: " ",
+      },
+    });
 
   function handleRegisterClient(data: FormDataClient) {
     console.log(data);
     reset();
   }
 
-  const { values: address, isFetching } = useAPI("40421520/json");
+  function searchAddress(e: any) {
+    const cep = e.target.value.replace(/\D/g, "");
+    console.log(cep);
+    api
+      .get(`${cep}/json/`)
+      .then((response) => {
+        setValues(response.data);
+        console.log(values);
+      })
+      .finally(() => {
+        setIsFetching(false);
+      });
 
-  console.log(address);
+    setValue("logradouro", values?.logradouro);
+    setValue("bairro", values?.bairro);
+    setValue("localidade", values?.localidade);
+    setValue("uf", values?.uf);
+
+    console.log({ values });
+    console.log(isFetching);
+  }
+
+  console.log(formState.errors);
 
   return (
     <FormContainer>
@@ -88,7 +113,7 @@ export function FormsClient() {
           <p>{formState.errors?.cpf?.message}</p>
 
           <label htmlFor="email">Email *</label>
-          <input type="email" id="email" {...register("email")} />
+          <input type="string" id="email" {...register("email")} />
           <p>{formState.errors?.email?.message}</p>
 
           <label htmlFor="telefone">Telefone</label>
@@ -101,14 +126,26 @@ export function FormsClient() {
           <p>{formState.errors?.telefone?.message}</p>
 
           <label htmlFor="cep">CEP *</label>
-
-          <input type="string" id="number" {...register("cep")} />
+          <input
+            type="string"
+            id="number"
+            {...register("cep")}
+            onBlur={searchAddress}
+          />
           {isFetching && <p>Carregando...</p>}
           <p>{formState.errors?.cep?.message}</p>
 
-          <label htmlFor="endereço">Endereço *</label>
-          <input type="string" id="endereço" {...register("endereco")} />
-          <p>{formState.errors?.endereco?.message}</p>
+          <label htmlFor="rua">Rua</label>
+          <input type="string" id="rua" {...register("logradouro")} />
+
+          <label htmlFor="bairro">Bairro</label>
+          <input type="string" id="bairro" {...register("bairro")} />
+
+          <label htmlFor="cidade">Cidade</label>
+          <input type="string" id="cidade" {...register("localidade")} />
+
+          <label htmlFor="uf">Estado</label>
+          <input type="string" id="uf" {...register("uf")} />
 
           <label htmlFor="senha">
             Senha *{" "}
@@ -119,8 +156,8 @@ export function FormsClient() {
             </i>
             .
           </label>
-          <input type="password" id="senha" {...register("senha")} />
-          <p>{formState.errors?.senha?.message}</p>
+          <input type="password" id="senha" {...register("password")} />
+          <p>{formState.errors?.password?.message}</p>
 
           <label htmlFor="repeatPassword">Repetir a senha *</label>
           <input
@@ -129,7 +166,6 @@ export function FormsClient() {
             {...register("repeatPassword")}
           />
           <p>{formState.errors?.repeatPassword?.message}</p>
-
           <RegisterButton type="submit">Cadastrar</RegisterButton>
         </FormContent>
       </form>
