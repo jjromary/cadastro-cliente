@@ -62,19 +62,16 @@ export function FormsClient() {
     });
 
   const handleRegisterClient = (data: FormDataClient) => {
-    console.log(data);
     toast.success("Usuario registrado como sucesso!");
     reset();
   };
 
   const searchAddress = (e: React.FocusEvent<HTMLInputElement>) => {
     const cep = e.target.value.replace(/\D/g, "");
-    console.log(cep);
     api
       .get(`${cep}/json/`)
       .then((response) => {
         setValues(response.data);
-        console.log(response.data);
       })
       .finally(() => {
         setIsFetching(false);
@@ -86,18 +83,20 @@ export function FormsClient() {
     setValue("neighborhood", values?.bairro);
     setValue("city", values?.localidade);
     setValue("state", values?.uf);
-    console.log("values", values);
-    console.log("teste");
   }, [values]);
 
   return (
     <FormContainer>
       <form onSubmit={handleSubmit(handleRegisterClient)} action="">
         <FormContent>
-          <LabelField htmlFor="name" tabIndex={0}>
-            Nome completo *
-          </LabelField>
-          <InputField type="text" id="name" {...register("name")} />
+          <LabelField htmlFor="name">Nome completo *</LabelField>
+          <InputField
+            type="text"
+            id="name"
+            {...register("name")}
+            tabIndex={0}
+            alt="Campo para inserir o nome completo"
+          />
           <ErroMessage>{formState.errors?.name?.message}</ErroMessage>
 
           <LabelField htmlFor="dateBirth">Data de nascimento *</LabelField>
@@ -107,15 +106,16 @@ export function FormsClient() {
             {...register("dateBirth")}
             placeholder="DD/MM/AAAA"
             tabIndex={0}
+            alt="Campo para inserir a sua data de nascimento"
           />
           <ErroMessage>{formState.errors?.dateBirth?.message}</ErroMessage>
 
           <LabelField htmlFor="genero">Gênero *</LabelField>
           <SelectField id="genero" {...register("genero")} tabIndex={0}>
-            <option value="Default">Prefiro não informar</option>
-            <option value="Feminino">Feminino</option>
-            <option value="Masculino">Masculino</option>
-            <option value="Outros">Outros</option>
+            <option value="NotInformed">Prefiro não informar</option>
+            <option value="Female">Feminino</option>
+            <option value="Male">Masculino</option>
+            <option value="Others">Outros</option>
           </SelectField>
 
           <LabelField htmlFor="cpf">CPF *</LabelField>
@@ -125,6 +125,7 @@ export function FormsClient() {
             placeholder="XXXXXXXXXXX"
             {...register("cpf")}
             tabIndex={0}
+            alt="Campo para inserir o CPF"
           />
           <ErroMessage>{formState.errors?.cpf?.message}</ErroMessage>
 
@@ -135,6 +136,7 @@ export function FormsClient() {
             placeholder="exemple@exemple.com"
             {...register("email")}
             tabIndex={0}
+            alt="campo para inserir o email"
           />
           <ErroMessage>{formState.errors?.email?.message}</ErroMessage>
 
@@ -145,16 +147,18 @@ export function FormsClient() {
             placeholder="(DDD) + 99999-9999"
             {...register("telphone")}
             tabIndex={0}
+            alt="campo para inserir o telefone"
           />
           <ErroMessage>{formState.errors?.telphone?.message}</ErroMessage>
           <LabelField htmlFor="cep">CEP *</LabelField>
           <InputField
             type="string"
-            id="number"
+            id="cep"
             placeholder="XXXXX-XXX"
             {...register("cep")}
             onBlur={searchAddress}
             tabIndex={0}
+            alt="campo para inserir o CEP. Com CEP inserido os campos Rua, Bairro, Cidade e Estado serão preenchidos automaticamente."
           />
           {isFetching && <ErroMessage>Carregando...</ErroMessage>}
           <ErroMessage>{formState.errors?.cep?.message}</ErroMessage>
@@ -165,6 +169,7 @@ export function FormsClient() {
             id="street"
             {...register("street")}
             tabIndex={0}
+            alt="campo rua"
           />
 
           <LabelField htmlFor="neighborhood">Bairro</LabelField>
@@ -173,6 +178,7 @@ export function FormsClient() {
             id="neighborhood"
             {...register("neighborhood")}
             tabIndex={0}
+            alt="campo bairro"
           />
 
           <LabelField htmlFor="city">Cidade</LabelField>
@@ -181,6 +187,7 @@ export function FormsClient() {
             id="city"
             {...register("city")}
             tabIndex={0}
+            alt="campo cidade"
           />
 
           <LabelField htmlFor="state">Estado</LabelField>
@@ -189,6 +196,7 @@ export function FormsClient() {
             id="state"
             {...register("state")}
             tabIndex={0}
+            alt="campo estado"
           />
 
           <LabelField htmlFor="password">
@@ -204,6 +212,7 @@ export function FormsClient() {
             id="password"
             {...register("password")}
             tabIndex={0}
+            alt="Insira a sua senha"
           />
           <ErroMessage>{formState.errors?.password?.message}</ErroMessage>
 
@@ -213,6 +222,7 @@ export function FormsClient() {
             id="repeatPassword"
             {...register("repeatPassword")}
             tabIndex={0}
+            alt="repita a sua senha inseria no campo anterior."
           />
           <ErroMessage>{formState.errors?.repeatPassword?.message}</ErroMessage>
           <RegisterButton type="submit">Cadastrar</RegisterButton>
@@ -221,4 +231,3 @@ export function FormsClient() {
     </FormContainer>
   );
 }
-

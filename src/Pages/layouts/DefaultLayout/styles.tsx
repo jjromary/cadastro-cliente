@@ -10,4 +10,3 @@ export const LayoutContainer = styled.div`
   flex-direction: column;
   background-color: ${(props) => props.theme.DefaultBackgroundColor2};
 `;
-

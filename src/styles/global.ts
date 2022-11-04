@@ -18,7 +18,6 @@ export const GlobalStyle = createGlobalStyle`
         box-shadow: 0 0 0 2px ${props => props.theme.DefaultFocusColor};
     }
 
-
     body, input, textarea, button {
         font-family: 'Poppins', sans-serif;
         font-weight: 400;
