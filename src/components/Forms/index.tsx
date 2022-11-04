@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { registerClientFormValidationSchema } from "./validationFormField";
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
+import { toast } from "react-toastify";
 interface FormDataClient {
   name: string;
   dateBirth: string;
@@ -62,6 +63,7 @@ export function FormsClient() {
 
   const handleRegisterClient = (data: FormDataClient) => {
     console.log(data);
+    toast.success("Usuario registrado como sucesso!");
     reset();
   };
 
@@ -78,8 +80,6 @@ export function FormsClient() {
         setIsFetching(false);
       });
   };
-
-  console.log(formState.errors);
 
   useEffect(() => {
     setValue("street", values?.logradouro);
