@@ -7,4 +7,5 @@ export const defaultTheme = {
     DefaultBorderColor: '#323234',
     DefaultFocusColor: '#0066cc',
     DefaultHoverColor: '#8a8a8f',
+    DefaulMessageErro: '#e60000',
 }

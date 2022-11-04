@@ -12,7 +12,7 @@ export const GlobalStyle = createGlobalStyle`
         color: ${props => props.theme.DefaultTextColor};
         -webkit-font-smoothing: antialiased;
     }
-
+    
     :focus {
         outline: 0;
         box-shadow: 0 0 0 2px ${props => props.theme.DefaultFocusColor};

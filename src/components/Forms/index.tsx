@@ -1,22 +1,29 @@
-import { FormContainer, FormContent, RegisterButton } from "./styles";
+import {
+  ErroMessage,
+  FormContainer,
+  FormContent,
+  InputField,
+  LabelField,
+  RegisterButton,
+  SelectField,
+} from "./styles";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerClientFormValidationSchema } from "./validationFormField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../../services/api";
 interface FormDataClient {
   name: string;
-  dataNascimento: string;
+  dateBirth: string;
   genero: string;
   cpf: string;
   email: string;
-  telefone: string;
+  telphone: string;
   cep: string;
-  bairro: string | null;
-  localidade: string | null;
-  logradouro: string | null;
-  uf: string | null;
-  endereco: string;
+  neighborhood: string | null;
+  city: string | null;
+  street: string | null;
+  state: string | null;
   password: string;
   repeatPassword: string;
 }
@@ -30,10 +37,10 @@ export function FormsClient() {
     bairro: string | null;
     logradouro: string | null;
   }>({
-    bairro: " ",
-    localidade: " ",
-    logradouro: " ",
-    uf: " ",
+    localidade: "",
+    uf: "",
+    bairro: "",
+    logradouro: "",
   });
 
   const [isFetching, setIsFetching] = useState<boolean>();
@@ -41,131 +48,173 @@ export function FormsClient() {
     useForm<FormDataClient>({
       resolver: zodResolver(validationFormClient),
       defaultValues: {
-        name: " ",
-        dataNascimento: " ",
-        genero: " ",
-        cpf: " ",
-        email: " ",
-        telefone: " ",
-        cep: " ",
-        endereco: " ",
-        password: " ",
-        repeatPassword: " ",
+        name: "",
+        dateBirth: "",
+        genero: "",
+        cpf: "",
+        email: "",
+        telphone: "",
+        cep: "",
+        password: "",
+        repeatPassword: "",
       },
     });
 
-  function handleRegisterClient(data: FormDataClient) {
+  const handleRegisterClient = (data: FormDataClient) => {
     console.log(data);
     reset();
-  }
+  };
 
-  function searchAddress(e: any) {
+  const searchAddress = (e: React.FocusEvent<HTMLInputElement>) => {
     const cep = e.target.value.replace(/\D/g, "");
     console.log(cep);
     api
       .get(`${cep}/json/`)
       .then((response) => {
         setValues(response.data);
-        console.log(values);
+        console.log(response.data);
       })
       .finally(() => {
         setIsFetching(false);
       });
-
-    setValue("logradouro", values?.logradouro);
-    setValue("bairro", values?.bairro);
-    setValue("localidade", values?.localidade);
-    setValue("uf", values?.uf);
-
-    console.log({ values });
-    console.log(isFetching);
-  }
+  };
 
   console.log(formState.errors);
+
+  useEffect(() => {
+    setValue("street", values?.logradouro);
+    setValue("neighborhood", values?.bairro);
+    setValue("city", values?.localidade);
+    setValue("state", values?.uf);
+    console.log("values", values);
+    console.log("teste");
+  }, [values]);
 
   return (
     <FormContainer>
       <form onSubmit={handleSubmit(handleRegisterClient)} action="">
         <FormContent>
-          <label htmlFor="name">Nome completo *</label>
-          <input type="text" id="name" {...register("name")} />
-          <p>{formState.errors?.name?.message}</p>
+          <LabelField htmlFor="name" tabIndex={0}>
+            Nome completo *
+          </LabelField>
+          <InputField type="text" id="name" {...register("name")} />
+          <ErroMessage>{formState.errors?.name?.message}</ErroMessage>
 
-          <label htmlFor="dataNascimento">Data de nascimento *</label>
-          <input
+          <LabelField htmlFor="dateBirth">Data de nascimento *</LabelField>
+          <InputField
             type="text"
-            id="dataNasciomento"
-            {...register("dataNascimento")}
+            id="dateBirth"
+            {...register("dateBirth")}
             placeholder="DD/MM/AAAA"
+            tabIndex={0}
           />
-          <p>{formState.errors?.dataNascimento?.message}</p>
+          <ErroMessage>{formState.errors?.dateBirth?.message}</ErroMessage>
 
-          <label htmlFor="genero">Gênero</label>
-          <select id="genero" {...register("genero")}>
-            <option value="Default"></option>
+          <LabelField htmlFor="genero">Gênero *</LabelField>
+          <SelectField id="genero" {...register("genero")} tabIndex={0}>
+            <option value="Default">Prefiro não informar</option>
             <option value="Feminino">Feminino</option>
             <option value="Masculino">Masculino</option>
             <option value="Outros">Outros</option>
-          </select>
+          </SelectField>
 
-          <label htmlFor="cpf">CPF *</label>
-          <input type="string" id="cpf" {...register("cpf")} />
-          <p>{formState.errors?.cpf?.message}</p>
-
-          <label htmlFor="email">Email *</label>
-          <input type="string" id="email" {...register("email")} />
-          <p>{formState.errors?.email?.message}</p>
-
-          <label htmlFor="telefone">Telefone</label>
-          <input
+          <LabelField htmlFor="cpf">CPF *</LabelField>
+          <InputField
             type="string"
-            id="telefone"
-            placeholder="(DDD)+99999-9999"
-            {...register("telefone")}
+            id="cpf"
+            placeholder="XXXXXXXXXXX"
+            {...register("cpf")}
+            tabIndex={0}
           />
-          <p>{formState.errors?.telefone?.message}</p>
+          <ErroMessage>{formState.errors?.cpf?.message}</ErroMessage>
 
-          <label htmlFor="cep">CEP *</label>
-          <input
+          <LabelField htmlFor="email">Email *</LabelField>
+          <InputField
+            type="string"
+            id="email"
+            placeholder="exemple@exemple.com"
+            {...register("email")}
+            tabIndex={0}
+          />
+          <ErroMessage>{formState.errors?.email?.message}</ErroMessage>
+
+          <LabelField htmlFor="telphone">Telefone *</LabelField>
+          <InputField
+            type="string"
+            id="telphone"
+            placeholder="(DDD) + 99999-9999"
+            {...register("telphone")}
+            tabIndex={0}
+          />
+          <ErroMessage>{formState.errors?.telphone?.message}</ErroMessage>
+          <LabelField htmlFor="cep">CEP *</LabelField>
+          <InputField
             type="string"
             id="number"
+            placeholder="XXXXX-XXX"
             {...register("cep")}
             onBlur={searchAddress}
+            tabIndex={0}
           />
-          {isFetching && <p>Carregando...</p>}
-          <p>{formState.errors?.cep?.message}</p>
+          {isFetching && <ErroMessage>Carregando...</ErroMessage>}
+          <ErroMessage>{formState.errors?.cep?.message}</ErroMessage>
 
-          <label htmlFor="rua">Rua</label>
-          <input type="string" id="rua" {...register("logradouro")} />
+          <LabelField htmlFor="street">Rua</LabelField>
+          <InputField
+            type="string"
+            id="street"
+            {...register("street")}
+            tabIndex={0}
+          />
 
-          <label htmlFor="bairro">Bairro</label>
-          <input type="string" id="bairro" {...register("bairro")} />
+          <LabelField htmlFor="neighborhood">Bairro</LabelField>
+          <InputField
+            type="string"
+            id="neighborhood"
+            {...register("neighborhood")}
+            tabIndex={0}
+          />
 
-          <label htmlFor="cidade">Cidade</label>
-          <input type="string" id="cidade" {...register("localidade")} />
+          <LabelField htmlFor="city">Cidade</LabelField>
+          <InputField
+            type="string"
+            id="city"
+            {...register("city")}
+            tabIndex={0}
+          />
 
-          <label htmlFor="uf">Estado</label>
-          <input type="string" id="uf" {...register("uf")} />
+          <LabelField htmlFor="state">Estado</LabelField>
+          <InputField
+            type="string"
+            id="state"
+            {...register("state")}
+            tabIndex={0}
+          />
 
-          <label htmlFor="senha">
-            Senha *{" "}
+          <LabelField htmlFor="password">
+            Senha *
             <i>
               Senha deverá conter no mínimo uma letra minúscula, uma maiúscula,
               um número, um caractere especial e com o comprimento mínimo de
               oito caracteres.
             </i>
-            .
-          </label>
-          <input type="password" id="senha" {...register("password")} />
-          <p>{formState.errors?.password?.message}</p>
+          </LabelField>
+          <InputField
+            type="password"
+            id="password"
+            {...register("password")}
+            tabIndex={0}
+          />
+          <ErroMessage>{formState.errors?.password?.message}</ErroMessage>
 
-          <label htmlFor="repeatPassword">Repetir a senha *</label>
-          <input
+          <LabelField htmlFor="repeatPassword">Repetir a senha *</LabelField>
+          <InputField
             type="password"
             id="repeatPassword"
             {...register("repeatPassword")}
+            tabIndex={0}
           />
-          <p>{formState.errors?.repeatPassword?.message}</p>
+          <ErroMessage>{formState.errors?.repeatPassword?.message}</ErroMessage>
           <RegisterButton type="submit">Cadastrar</RegisterButton>
         </FormContent>
       </form>
