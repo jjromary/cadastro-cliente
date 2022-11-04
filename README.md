@@ -1,10 +1,10 @@
 </p>
 <h1 align="center">
-   Cadastro de clientes
+   Formulário para cadastro de clientes  
 </h1>
 
 <h4 align="center"> 
-	🚧  Cadastro de clientes | Em construção 🚧
+	✅  Cadastro de clientes | Concluído ✅
 </h4>
 
 
@@ -12,7 +12,7 @@
 
 ## 💻 Sobre o projeto
 
- - Tela de cadastro de clientes
+ - Formulárrio para cadastro de clientes com validação dos campos e endereço preenchido automaticamente atráves do CEP informado
 
 
 ## 🛠 Tecnologias
@@ -20,15 +20,13 @@
 As seguintes ferramentas foram usadas na construção do projeto:
 
 #### **Website** 
- [React](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/) 
+ [React](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/) + [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/) + [React Toastify](https://github.com/fkhadra/react-toastify#readme)
  
  ## ⚙️ Funcionalidades
 
-- [ ] Funcionalidade 1.
-- [ ] Funcionalidade 2.
-- [ ] Funcionalidade 3.
+- [x] Cadastro de clientes.
 
-  
+
 ## 🚀 Como executar o projeto
 
 
