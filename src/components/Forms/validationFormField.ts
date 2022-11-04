@@ -24,7 +24,7 @@ export const registerClientFormValidationSchema = zod.object({
       /^\([0-9]{2}\) [0-9]?[0-9]{4}-[0-9]{4}$/,
       "Telefone inválido. Utilize o formato DDD + 999999999"
     ),
-  cep: zod.string().min(8, "CEP curto demais. O CEP possui 8 caracteres").max(8, "CEP longo demais. O CEP possui 8 caracteres").regex(/^([\d]{2})\.?([\d]{3})\-?([\d]{3})/, "Cep inválido"),
+  cep: zod.string().min(8, "CEP curto demais. O CEP possui 8 caracteres").regex(/^([\d]{2})\.?([\d]{3})\-?([\d]{3})/, "Cep inválido"),
   street: zod.string().min(3),
   neighborhood: zod.string().min(3),
   city: zod.string().min(3),
