@@ -6,4 +6,5 @@ export const HeaderContainer = styled.div`
     justify-content: center;
 
     border-bottom: 1px solid ${props => props.theme.DefaultBorderColor};
+
 `;

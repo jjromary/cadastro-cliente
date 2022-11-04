@@ -12,27 +12,35 @@ export const FormContent = styled.div`
     height: auto;
     display: flex;
     flex-direction: column;
-    font-size: 1.125rem;
     gap: 0.25rem;
-
-    input {
-        width: 100%;
-        height: 2.5rem;
-        padding: 0 0.5rem;
-    }
-
-    select {
-        height: 2.5rem;
-        border: none;
-        border-radius: 8px;
-        font-size: 1.125rem;
-        padding: 0 0.5rem;
-        background: #FFFFFF;        
-    }
 
     i {
         font-size: 0.75rem;
     }
+`;
+
+export const LabelField = styled.label`
+    font-weight: 500;
+`;
+
+export const InputField = styled.input`
+    width: 100%;
+    height: 2.5rem;
+    padding: 0 0.5rem;
+`;
+
+export const SelectField = styled.select`
+    height: 2.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.125rem;
+    padding: 0 0.5rem;
+    background: #FFFFFF;
+`;
+
+export const ErroMessage = styled.p`
+    font-size: 0.75rem;
+    color: ${props => props.theme.DefaulMessageErro};
 `;
 
 export const RegisterButton = styled.button`
@@ -57,5 +65,4 @@ export const RegisterButton = styled.button`
         opacity: 0.7;
         cursor: not-allowed;
     }
-    
 `;
